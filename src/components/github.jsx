@@ -2,11 +2,15 @@ import axios from "axios";
 
 const {useState, useEffect}=require("react");
 
-const getGithubuser=(q)=>{
+const getGithubuser=(q="albseb511")=>{
    return axios("https://api.github.com/search/users",
-    {method:"GET", params:{q:q}})
+    {method:"GET",
+     params:{
+        q:q
+    }
+})
    
-}
+};
 
 function Github(){
     // const [loading, setLoading]=useState();
@@ -15,32 +19,33 @@ function Github(){
 
     useEffect(()=>{
      
-   getGithubuser("vinayak2882")
+   getGithubuser("albseb")
    .then(res=>{
     setData(res.data)
         })
         .catch(err=>{
-    setError(error)
+    setError(true)
     console.log(err)
         })
-    })
-
+    },[])
+console.log(data)
     return (
       <div>
             <h1>Github Users</h1>
-        {data?.items?.map/((items)=>(<GithubCard{...items}/>))}
+        {data?.items?.map((item)=>(<GithubCard key={item.id}{...item}/>))}
       </div>
-    )
-
-    const GithubCard=({avatar,name})=>{
+    );
+    }
+    const GithubCard=({avatar_url,login})=>{
         return (
             <div style={{display:"flex",gap:"2rem"}}>
-                <img src={avatar} alt={name}/>
-                <div>{name}</div>
+                <img style={{width:"100px"}} src={avatar_url} alt={login}/>
+                <div>{login}</div>
+                
             </div>
         )
-    }
+    };
 
-}
+// }
 
 export default Github
